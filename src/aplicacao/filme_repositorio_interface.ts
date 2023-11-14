@@ -1,6 +1,6 @@
 export default interface FilmeRepositorInterface{
     salvar(input:FilmeDTO):Promise<FilmeDTO>
-    listar():Promise<FilmeDTO>
+    listar():Promise<FilmeDTO[]>
     buscarPorId(id:number):Promise<FilmeDTO | undefined>
 }
 
