@@ -1,3 +1,5 @@
+import BancoMongoDB from './infra/banco_mongodb'
+import ListaFilme from './aplicacao/lista_filme.use-case'
 import express from 'express'
 const app = express()
 app.use(express.json())
@@ -23,8 +25,11 @@ app.post('/filmes',(req,res)=>{
     filmesCadastros.push(filme)
     res.status(201).send(filme)
 })
-app.get('/filmes',(req,res)=>{
-    res.send("Filmes Listados com sucesso")
+app.get('/filmes',async(req,res)=>{
+    const bancomongodb = new BancoMongoDB()
+    const listarFilme = new ListaFilme(bancomongodb)
+    const filmes = await listarFilme.executar()
+    res.send(filmes)
 })
 
 app.get('/filmes/:id',(req,res)=>{
