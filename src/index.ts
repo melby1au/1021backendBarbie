@@ -3,6 +3,7 @@ import ListaFilme from './aplicacao/lista_filme.use-case'
 import express from 'express'
 import SalvaFilme from './aplicacao/salva_filme.use-case'
 import cors from 'cors'
+const bancoMongoDB = new BancoMongoDB()
 const app = express()
 app.use(express.json())
 app.use(cors())
@@ -29,8 +30,8 @@ app.post('/filmes',(req,res)=>{
     res.status(201).send(filme)
 })
 app.get('/filmes',async(req,res)=>{
-    const bancomongodb = new BancoMongoDB()
-    const listarFilme = new ListaFilme(bancomongodb)
+    const bancoMongoDB = new BancoMongoDB()
+    const listarFilme = new ListaFilme(bancoMongoDB)
     const filmes = await listarFilme.executar()
     res.send(filmes)
 })
@@ -51,10 +52,9 @@ app.post('/filmes',async(req,res)=>{
         descricao,
         imagem
     }
-    const SalvaFilmes = new SalvaFilme(BancoMongoDB)
-    const repositorio = await SalvaFilmes.execute(filme)
+    const SalvaFilmes = new SalvaFilme(bancoMongoDB)
+    const resposta = await SalvaFilmes.execute(filme)
     res.send(200).send(filme)
-
 })
 
 //Tenho que iniciar o servidor na porta 3000
